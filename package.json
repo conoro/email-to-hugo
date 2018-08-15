@@ -1,0 +1,34 @@
+{
+  "name": "email-to-hugo",
+  "version": "1.0.0",
+  "description": "Send blogposts by email to Hugo blog via a Serverless function.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "email",
+    "gmail",
+    "hugo",
+    "blog",
+    "serverless",
+    "aws",
+    "lambda",
+    "circleci",
+    "git"
+  ],
+  "author": "Conor O'Neill",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@octokit/rest": "^15.9.4",
+    "base64-stream": "^0.1.3",
+    "email-addresses": "^3.0.1",
+    "gray-matter": "^4.0.1",
+    "imap": "^0.8.19",
+    "mailparser": "^2.3.2",
+    "mkdirp": "^0.5.1",
+    "slugify": "^1.3.0",
+    "toml": "^2.3.3",
+    "turndown": "^4.0.2"
+  }
+}

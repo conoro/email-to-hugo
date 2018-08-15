@@ -1,0 +1,34 @@
+service: email-to-hugo-dev
+
+frameworkVersion: ">=1.1.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    EMAIL2HUGO_IMAP_USER: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_USER}
+    EMAIL2HUGO_IMAP_PASSWORD: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_PASSWORD}
+    EMAIL2HUGO_IMAP_HOST: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_HOST}
+    EMAIL2HUGO_IMAP_PORT: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_PORT}
+    EMAIL2HUGO_IMAP_TLS: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_TLS}
+    EMAIL2HUGO_OCTO_AUTH_TYPE: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_OCTO_AUTH_TYPE}
+    EMAIL2HUGO_OCTO_AUTH_TOKEN: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_OCTO_AUTH_TOKEN}
+    EMAIL2HUGO_OCTO_OWNER: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_OCTO_OWNER}
+    EMAIL2HUGO_OCTO_REPO: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_OCTO_REPO}
+    EMAIL2HUGO_WHITELIST: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_WHITELIST}
+
+functions:
+  check:
+    handler: index.check
+    timeout: 30 # optional, in seconds, default is 6
+    events:
+      - http:
+          path: email2hugo
+          method: get
+          cors: true
+  cron:
+    handler: index.check
+    timeout: 30 # optional, in seconds, default is 6
+    events:
+      # Invoke Lambda function every 15 mins
+      - schedule: rate(15 minutes)
