@@ -11,6 +11,7 @@ It runs as a Serverless function on AWS Lambda every 15 minutes (or when you man
 - It doesn't handle attached images in GMail, only inline ones
 - It allows use of # ## and ### for h1, h2 and h3 in your emails
 - Basic GMail formatting like bold/italic/underline is preserved. Font and font-size are not.
+- Hugo shortcodes like {{< youtube DiaGuIr0TBY >}} work fine
 - It adds basic metadata like title/date/slug/draft-status to each post
 - It assumes you are building your Hugo site via some sort of CI like CircleCI. It does not run Hugo in any way. So it can be used from any device with an email client.
 - There is a simple whitelisting feature so that admin/spam/accidental emails to your account don't get converted to blogposts
