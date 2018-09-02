@@ -65,7 +65,7 @@ module.exports.check = (event, context, callback) => {
             var prefix = "(#" + seqno + ") ";
             msg.on("body", function (stream, info) {
                 //Create a write stream so that we can stream the attachment to file;
-                // console.log(prefix + "Streaming this attachment to file", slugify(filename.toLowerCase()), info);
+                console.log(prefix + "Streaming this attachment to file", slugify(filename.toLowerCase()), info);
                 var writeStream = fs.createWriteStream("/tmp/" + imgdir + "/" + slugify(filename.toLowerCase()));
                 writeStream.on("finish", async function () {
                     var image = fs.readFileSync("/tmp/" + imgdir + "/" + slugify(filename.toLowerCase()));
@@ -87,7 +87,7 @@ module.exports.check = (event, context, callback) => {
                 }
             });
             msg.once("end", function () {
-                // console.log(prefix + "Finished attachment %s", imgdir + "/" + slugify(filename.toLowerCase()));
+                console.log(prefix + "Finished attachment %s", imgdir + "/" + slugify(filename.toLowerCase()));
             });
         };
     }
@@ -169,7 +169,10 @@ module.exports.check = (event, context, callback) => {
 
                                         // Re-unescape markdown headers so I can use #, ## and ### in emails (note use of multiline mode)
                                         const regexUnescape = /^\\#/gm;
-                                        const fixedContent = fixedImages.replace(regexUnescape, '#');
+                                        const fixedHashes = fixedImages.replace(regexUnescape, '#');
+
+                                        // Delete any Non-breaking spaces that may have sneaked in via copy/paste
+                                        const fixedContent = fixedHashes.replace(/\u00a0/g, " ");
 
                                         var markdown = markdownHeader + fixedContent;
                                         // console.log(parsed.textAsHtml);
@@ -195,17 +198,19 @@ module.exports.check = (event, context, callback) => {
                         });
 
                         msg.once("attributes", function (attrs) {
-                            // Is this the right place for this??
+                            // Checking for attachments
+                            console.log("Checking for attachments");
+
                             if (blogpost.validSender == true) {
                                 // console.log("Attributes: %d", attrs);
                                 var attachments = findAttachmentParts(attrs.struct);
-                                // console.log("Has attachments: %d", attachments.length);
+                                console.log("Has attachments: %d", attachments.length);
                                 for (var i = 0, len = attachments.length; i < len; ++i) {
                                     var attachment = attachments[i];
-                                    // console.log(
-                                    //     "Fetching attachment %s",
-                                    //     attachment.params.name
-                                    // );
+                                    console.log(
+                                        "Fetching attachment %s",
+                                        attachment.params.name
+                                    );
                                     var f = imap.fetch(attrs.uid, {
                                         bodies: [attachment.partID],
                                         struct: true
@@ -242,7 +247,7 @@ module.exports.check = (event, context, callback) => {
             headers: {
                 "Content-Type": "text/plain"
             },
-            body: gerr
+            body: err
         });
         return;
     });
