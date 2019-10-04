@@ -4,7 +4,9 @@
   "description": "Send blogposts by email to Hugo blog via a Serverless function.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "keywords": [
     "email",
@@ -29,6 +31,8 @@
     "mkdirp": "^0.5.1",
     "slugify": "^1.3.0",
     "toml": "^2.3.3",
-    "turndown": "^4.0.2"
-  }
+    "turndown": "^4.0.2",
+    "snyk": "^1.230.5"
+  },
+  "snyk": true
 }
