@@ -1,10 +1,8 @@
-service: email-to-hugo-dev
-
-frameworkVersion: ">=1.1.0 <2.0.0"
+service: email-to-hugo-template
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs16.x
   environment:
     EMAIL2HUGO_IMAP_USER: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_USER}
     EMAIL2HUGO_IMAP_PASSWORD: ${file(./email2hugo.env.yml):dev.EMAIL2HUGO_IMAP_PASSWORD}
@@ -26,9 +24,9 @@ functions:
           path: email2hugo
           method: get
           cors: true
-  cron:
-    handler: index.check
-    timeout: 30 # optional, in seconds, default is 6
-    events:
-      # Invoke Lambda function every 15 mins
-      - schedule: rate(15 minutes)
+#  cron:
+#    handler: index.check
+#    timeout: 30 # optional, in seconds, default is 6
+#    events:
+#      # Invoke Lambda function every 15 mins
+#      - schedule: rate(15 minutes)
